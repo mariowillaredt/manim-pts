@@ -8,26 +8,27 @@ class VoigtProfile(Scene):
         return np.real(scipy.special.wofz(z)) / (sigma * np.sqrt(2 * np.pi))
 
     def construct(self):
-        x_min = -10
+        x_min = 0
         x_max = 10
         sigma = 1
         gamma = 1
-        run_time = 12
 
         x_values = np.linspace(x_min, x_max, 400)
-        y_values = self.voigt_profile(x_values, sigma, gamma)
+        y_values = self.voigt_profile(x_values-5, sigma, gamma)
 
         axes = Axes(
             x_range=[x_min, x_max, 1],
             y_range=[0, max(y_values) * 1.1, 0.1],
             axis_config={"color": WHITE},
         )
+        labels = axes.get_axis_labels(Text("wavelength $\lambda$").scale(0.5), Text("absorption").scale(0.5))
 
         voigt_graph = axes.plot_line_graph(
             x_values, y_values, line_color=RED, add_vertex_dots=False
         )
+        self.add(axes, labels)
 
-        self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_graph, lag_ratio=0.1)))
+        self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_graph, lag_ratio=0.1)), run_time=3.0)
         self.wait(2)
 
 if __name__ == "__main__":
