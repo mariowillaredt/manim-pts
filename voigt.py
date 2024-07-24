@@ -21,7 +21,7 @@ class VoigtProfile(Scene):
             y_range=[0, max(y_values) * 1.1, 0.1],
             axis_config={"color": WHITE},
         )
-        labels = axes.get_axis_labels(Text("wavelength $\lambda$"), Text("absorption").scale(0.5))
+        labels = axes.get_axis_labels(Text("wavelength"), Text("absorption").scale(0.5))
 
         voigt_graph = axes.plot_line_graph(
             x_values, y_values, line_color=RED, add_vertex_dots=False
