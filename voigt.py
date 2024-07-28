@@ -11,7 +11,7 @@ class VoigtProfile(Scene):
         x_min = 0
         x_max = 10
         sigma = 1
-        gamma = 1
+        gamma = 4
 
         x_values = np.linspace(x_min, x_max, 300)
         y_values = self.voigt_profile(x_values-5, sigma, gamma)
@@ -21,7 +21,7 @@ class VoigtProfile(Scene):
             y_range=[0, max(y_values) * 1.1, 0.1],
             axis_config={"color": WHITE},
         )
-        labels = axes.get_axis_labels(Text("wavelength"), Text("absorption").scale(0.5))
+        labels = axes.get_axis_labels(Tex("wavelength $\lambda$"), Text("absorption").scale(0.5))
 
         voigt_graph = axes.plot_line_graph(
             x_values, y_values, line_color=RED, add_vertex_dots=False
