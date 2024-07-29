@@ -11,11 +11,13 @@ class VoigtProfile(Scene):
         x_min = 0
         x_max = 10
         sigma = 1
-        gamma = 4
-
+        gamma = 1
+        voigt_func = FunctionGraph(
+        lambda x: self.voigt_profile(x-5, sigma, gamma), x_range=np.array([-10,10]), color=RED,
+#        lambda x: x, color=GREEN,
+        )
         x_values = np.linspace(x_min, x_max, 300)
         y_values = self.voigt_profile(x_values-5, sigma, gamma)
-
         axes = Axes(
             x_range=[x_min, x_max, 1],
             y_range=[0, max(y_values) * 1.1, 0.1],
@@ -28,7 +30,9 @@ class VoigtProfile(Scene):
         )
         self.add(axes, labels)
 
-        self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_graph, lag_ratio=0.1)), run_time=3.0)
+        self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_func, lag_ratio=0.1)), run_time=3.0)
+        d1 = Dot().set_color(RED)
+        self.play(MoveAlongPath(d1, voigt_func), rate_func=linear)
         self.wait(2)
 
 if __name__ == "__main__":
