@@ -10,10 +10,10 @@ class VoigtProfile(Scene):
     def construct(self):
         x_min = 0
         x_max = 10
-        sigma = 1
+        sigma = 0.1
         gamma = 1
         voigt_func = FunctionGraph(
-        lambda x: self.voigt_profile(x-5, sigma, gamma), x_range=np.array([-10,10]), color=RED,
+        lambda x: self.voigt_profile(x, sigma, gamma), x_range=np.array([-10,10]), color=RED,
 #        lambda x: x, color=GREEN,
         )
         x_values = np.linspace(x_min, x_max, 300)
@@ -28,9 +28,10 @@ class VoigtProfile(Scene):
         voigt_graph = axes.plot_line_graph(
             x_values, y_values, line_color=RED, add_vertex_dots=False
         )
-        self.add(axes, labels)
+        #self.add(axes, labels)
 
-        self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_func, lag_ratio=0.1)), run_time=3.0)
+        #self.play(AnimationGroup(Create(axes, lag_ratio=0.1), Create(voigt_func, lag_ratio=0.1)), run_time=3.0)
+        self.play(Create(voigt_func, lag_ratio=0.1), run_time=3.0)
         d1 = Dot().set_color(RED)
         self.play(MoveAlongPath(d1, voigt_func), rate_func=linear)
         self.wait(2)
