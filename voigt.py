@@ -34,7 +34,7 @@ class VoigtProfile(Scene):
         self.play(Create(voigt_func, lag_ratio=0.1), run_time=3.0)
         d1 = Dot().set_color(RED)
         self.play(MoveAlongPath(d1, voigt_func), rate_func=linear)
-        self.wait(2)
+        self.wait(3)
 
 if __name__ == "__main__":
     from manim import *
