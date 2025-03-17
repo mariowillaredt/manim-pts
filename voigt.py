@@ -1,6 +1,7 @@
 from manim import *
 import numpy as np
 import scipy.special
+import matplotlib.pyplot as plt
 
 class VoigtProfile(Scene):
     def voigt_profile(self, x, sigma, gamma):
@@ -11,11 +12,10 @@ class VoigtProfile(Scene):
         x_min = 0
         x_max = 10
         sigma = 0.1
-        gamma = 1
+        gamma = 0.1
         voigt_func = FunctionGraph(
-        lambda x: self.voigt_profile(x, sigma, gamma), x_range=np.array([-10,10]), color=RED,
-#        lambda x: x, color=GREEN,
-        )
+        lambda x: self.voigt_profile(x, sigma, gamma), x_range=np.array([-1,1]), color=RED,)
+        # lambda x: x, color=GREEN,
         x_values = np.linspace(x_min, x_max, 300)
         y_values = self.voigt_profile(x_values-5, sigma, gamma)
         axes = Axes(
@@ -37,8 +37,15 @@ class VoigtProfile(Scene):
         self.wait(3)
 
 if __name__ == "__main__":
+    '''
     from manim import *
     config.media_width = "100%"
     scene = VoigtProfile()
     scene.render()
-
+    '''
+    x_values = np.linspace(-5, 5, 1000)
+    sigma = .68
+    gamma = .34
+    y_values = scipy.special.voigt_profile(x_values, sigma, gamma)
+    plt.plot(x_values, y_values)
+    plt.show()
