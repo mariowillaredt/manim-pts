@@ -8,11 +8,16 @@ def voigt_profile(x, sigma, gamma):
     return np.real(scipy.special.wofz(z)) / (sigma * np.sqrt(2 * np.pi))
 
 if __name__ == "__main__":
-    x_values = np.linspace(1392.5 - 5,1392.5 + 5, 1000)
+    lambdas = np.genfromtxt("lambdas0.csv", delimiter=",")
+    absorps = np.genfromtxt("absorptions0.csv", delimiter=",")
+    print(np.shape(lambdas))
+    print(np.shape(absorps))
+    x_values = np.linspace(1392.5 - 0.1,1392.5 + 0.1, 3870)
     sigma = .68
     gamma = .14
-    y_values = scipy.special.voigt_profile(x_values - 1392.5, sigma, gamma)
+    y_values = 10**(-6) * scipy.special.voigt_profile(x_values - 1392.5, sigma, gamma)
     plt.plot(x_values, y_values)
+    plt.plot(lambdas, absorps)
     plt.grid(alpha=0.5)
     plt.xlabel("wavlength in nm")
     plt.ylabel("absorption")
