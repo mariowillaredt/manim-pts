@@ -3,7 +3,7 @@ import scipy.special
 import matplotlib
 import matplotlib.pyplot as plt
 
-def voigt_profile(self, x, sigma, gamma):
+def voigt_profile(x, sigma, gamma):
     z = (x + 1j * gamma) / (sigma * np.sqrt(2))
     return np.real(scipy.special.wofz(z)) / (sigma * np.sqrt(2 * np.pi))
 
