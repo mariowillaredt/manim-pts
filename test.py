@@ -11,6 +11,9 @@ def voigt_profile_wofz(x, sigma, gamma, x_offset):
 def voigt_profile(x, sigma, gamma, x_offset, magnitude):
     return magnitude * scipy.special.voigt_profile(x - x_offset, sigma, gamma)
 
+def periodic_scan():
+    pass
+
 if __name__ == "__main__":
     lambdas = np.genfromtxt("lambdas0.csv", delimiter=",")
     absorps = np.genfromtxt("absorptions0.csv", delimiter=",")
@@ -27,8 +30,8 @@ if __name__ == "__main__":
     gamma = .14
     z_values = 10**(-6) * voigt_profile_wofz(x_values, sigma, gamma, lambdas[stelle])
     y_values = 10**(-6) * voigt_profile(lambdas, sigma, gamma, lambdas[stelle], 1.0)
-    initial_guess = [0.03,0.03,1392.5,1e-6]
-    popt, pcov = curve_fit(voigt_profile, lambdas, absorps, p0=initial_guess)
+    seed = [0.03,0.03,1392.5,1e-6]
+    popt, pcov = curve_fit(voigt_profile, lambdas, absorps, p0=seed)
     fitted_sigma, fitted_gamma, fitted_x_offset, fitted_magnitude = popt
     print("Fitted parameters:")
     print(f"Sigma: {fitted_sigma}")
