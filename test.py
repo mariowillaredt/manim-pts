@@ -15,14 +15,14 @@ def periodic_scan():
     pass
 
 if __name__ == "__main__":
-    lambdas = np.genfromtxt("lambdas0.csv", delimiter=",")
-    absorps = np.genfromtxt("absorptions0.csv", delimiter=",")
-    print(np.shape(lambdas))
-    print(np.shape(absorps))
-    stellen = np.where(np.isclose(absorps, 1e-6, atol=1e-7))
+    lambdas_raw = np.genfromtxt("lambdas0.csv", delimiter=",")
+    absorps_raw = np.genfromtxt("absorptions0.csv", delimiter=",")
+    print(np.shape(lambdas_raw))
+    print(np.shape(absorps_raw))
+    stellen = np.where(np.isclose(absorps_raw, 1e-6, atol=1e-7))
     print(stellen)
-    lambdas = lambdas[2453:2892]
-    absorps = absorps[2453:2892]
+    lambdas = lambdas_raw[2453:2892]
+    absorps = absorps_raw[2453:2892]
     stelle = np.argmax(absorps)
     print(lambdas[stelle])
     x_values = np.linspace(lambdas[0], lambdas[2792 - 2553-1], np.shape(lambdas)[0])
@@ -40,8 +40,8 @@ if __name__ == "__main__":
     print(f"Magnitude: {fitted_magnitude}")
     # plt.plot(x_values, z_values)
     # plt.plot(x_values, y_values)
-    plt.plot(lambdas, absorps)
-    plt.plot(lambdas, voigt_profile(lambdas, *popt), label="Fitted Voigt Profile")
+    plt.plot(lambdas_raw, absorps_raw)
+    plt.plot(lambdas_raw, voigt_profile(lambdas_raw, *popt), label="Fitted Voigt Profile")
     plt.legend()
     plt.grid(alpha=0.5)
     plt.xlabel("wavlength in nm")
