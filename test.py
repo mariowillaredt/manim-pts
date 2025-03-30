@@ -11,10 +11,10 @@ def voigt_profile_wofz(x, sigma, gamma, x_offset):
 def voigt_profile(x, sigma, gamma, x_offset, magnitude):
     return magnitude * scipy.special.voigt_profile(x - x_offset, sigma, gamma)
 
-def periodic_scan(t, lb, ub, freq):
+def periodic_scan(t, lb, ub, freq, phase):
     amplitude = (ub - lb) / 2
     offset = (ub + lb) / 2
-    return amplitude * np.sin(2 * np.pi * freq * t) + offset
+    return amplitude * np.sin(2 * np.pi * freq * t + phase) + offset
 
 if __name__ == "__main__":
     lambdas_raw = np.genfromtxt("lambdas0.csv", delimiter=",")
@@ -43,17 +43,24 @@ if __name__ == "__main__":
     print(f"Gamma: {fitted_gamma}")
     print(f"X Offset: {fitted_x_offset}")
     print(f"Magnitude: {fitted_magnitude}")
-    t = np.arange(0, 4, 0.001)
-    vals = periodic_scan(t, 1392.457, 1392.614, 1)
+    t = np.arange(0, 0.005, 1e-6)
+    vals = periodic_scan(t, 1392.457, 1392.614, 500, np.pi/2)
     scanned_voigt = voigt_profile(vals, fitted_sigma, fitted_gamma, fitted_x_offset, fitted_magnitude)
     # plt.plot(x_values, z_values)
     # plt.plot(x_values, y_values)
-    # plt.plot(lambdas, absorps)
-    # plt.plot(lambdas, voigt_profile(lambdas, *popt), label="Fitted Voigt Profile")
-    plt.plot(t, scanned_voigt, label="Scanned Voigt Profile")
+    plt.plot(lambdas, absorps)
+    plt.plot(lambdas, voigt_profile(lambdas, *popt), label="Fitted Voigt Profile")
     plt.legend()
     plt.grid(alpha=0.5)
     plt.xlabel("wavlength in nm")
     plt.ylabel("absorption")
     plt.title("Voigt Profile Fitting")
+    plt.show()
+
+    plt.plot(t, scanned_voigt, label="absorption over time")
+    plt.legend()
+    plt.grid(alpha=0.5)
+    plt.xlabel("time in s")
+    plt.ylabel("absorption")
+    plt.title("Input for Scan")
     plt.show()
