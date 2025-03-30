@@ -11,8 +11,10 @@ def voigt_profile_wofz(x, sigma, gamma, x_offset):
 def voigt_profile(x, sigma, gamma, x_offset, magnitude):
     return magnitude * scipy.special.voigt_profile(x - x_offset, sigma, gamma)
 
-def periodic_scan():
-    pass
+def periodic_scan(t, lb, ub, freq):
+    amplitude = (ub - lb) / 2
+    offset = (ub + lb) / 2
+    return amplitude * np.sin(2 * np.pi * freq * t) + offset
 
 if __name__ == "__main__":
     lambdas_raw = np.genfromtxt("lambdas0.csv", delimiter=",")
@@ -24,7 +26,10 @@ if __name__ == "__main__":
     lambdas = lambdas_raw[2453:2892]
     absorps = absorps_raw[2453:2892]
     stelle = np.argmax(absorps)
-    print(lambdas[stelle])
+    print("Index mit Max-Wert: ", lambdas[stelle])
+    sine_max = np.where(np.isclose(absorps, 4e-7, atol=3e-8))
+    print("Index Sine Max: ", sine_max)
+    print("Wavelengths Sine Bounds: ", lambdas[sine_max])
     x_values = np.linspace(lambdas[0], lambdas[2792 - 2553-1], np.shape(lambdas)[0])
     sigma = .68
     gamma = .14
@@ -38,10 +43,14 @@ if __name__ == "__main__":
     print(f"Gamma: {fitted_gamma}")
     print(f"X Offset: {fitted_x_offset}")
     print(f"Magnitude: {fitted_magnitude}")
+    t = np.arange(0, 4, 0.001)
+    vals = periodic_scan(t, 1392.457, 1392.614, 1)
+    scanned_voigt = voigt_profile(vals, fitted_sigma, fitted_gamma, fitted_x_offset, fitted_magnitude)
     # plt.plot(x_values, z_values)
     # plt.plot(x_values, y_values)
-    plt.plot(lambdas_raw, absorps_raw)
-    plt.plot(lambdas_raw, voigt_profile(lambdas_raw, *popt), label="Fitted Voigt Profile")
+    # plt.plot(lambdas, absorps)
+    # plt.plot(lambdas, voigt_profile(lambdas, *popt), label="Fitted Voigt Profile")
+    plt.plot(t, scanned_voigt, label="Scanned Voigt Profile")
     plt.legend()
     plt.grid(alpha=0.5)
     plt.xlabel("wavlength in nm")
