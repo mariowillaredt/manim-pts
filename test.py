@@ -57,7 +57,7 @@ if __name__ == "__main__":
     plt.title("Voigt Profile Fitting")
     plt.show()
 
-    plt.plot(t, scanned_voigt, label="absorption over time")
+    plt.plot(t, np.max(scanned_voigt) - scanned_voigt, label="absorption over time")
     plt.legend()
     plt.grid(alpha=0.5)
     plt.xlabel("time in s")
